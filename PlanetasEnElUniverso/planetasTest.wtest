@@ -1,0 +1,41 @@
+import planetas.*
+
+test "delegacion diplomatica con 3 miembros"{
+    const persona1 = new Persona(monedas = 40, edad = 20)
+    const persona2 = new Persona(monedas = 40, edad = 60)
+    const persona3 = new Persona(monedas = 50, edad = 22)
+    const persona4 = new Persona(edad = 45, responsabilidad = new Productor())
+
+    const planeta = new Planeta(habitantes = [persona1, persona2, persona3, persona4])
+
+    assert.equals(3, planeta.delegacionDiplomatica().size())
+}
+
+test "planeta es valioso"{
+    const planeta = new Planeta(construcciones = [new Muralla(longitud = 12)])
+
+    assert.that(planeta.esValioso())
+}
+
+test "planeta no valioso"{
+    const persona1 = new Persona(monedas = 40, edad = 20)
+    const persona2 = new Persona(monedas = 40, edad = 60)
+    const persona3 = new Persona(monedas = 50, edad = 22)
+    const persona4 = new Persona(edad = 45, responsabilidad = new Productor())
+
+    const planeta = new Planeta(habitantes = [persona1, persona2, persona3, persona4], construcciones = [new Muralla(longitud = 8)])
+
+    assert.notThat(planeta.esValioso())
+}
+
+test "Contructores y Productores pertenecen a delegacion"{
+    const productor = new Persona(monedas = 30, edad = 45, responsabilidad = new Productor(tecnicas = ["cultivo", "tec2", "tec3", "tec4", "tec5", "tec6"]))
+    const constructor1 = new Persona(monedas = 30, edad = 20, responsabilidad = new Constructor(construccionesRealizadas = 3, ubicacion = montania, inteligencia = 10))
+    const constructor2 = new Persona(monedas = 30, edad = 20, responsabilidad = new Constructor(construccionesRealizadas = 6, ubicacion = costa, inteligencia = 10))
+    const constructor3 = new Persona(monedas = 30, edad = 20, responsabilidad = new Constructor(construccionesRealizadas = 6, ubicacion = llanura, inteligencia = 10))
+    const constructor4 = new Persona(monedas = 30, edad = 20, responsabilidad = new Constructor(construccionesRealizadas = 6, ubicacion = meseta, inteligencia = 10))
+
+    const planeta = new Planeta(habitantes = [productor, constructor1, constructor2, constructor3, constructor4])
+
+    assert.equals(4, planeta.delegacionDiplomatica().size())
+}
