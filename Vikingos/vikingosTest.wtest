@@ -1,0 +1,31 @@
+import vikingos.*
+
+test "no pudo subir a la expedicion"{
+    const esclavoPrueba = new Soldado(casta = esclavo, armas = 1, monedas = 10, vidasCobradas = 0)
+    const expedicion = new Expediciones()
+
+    assert.throwsException({esclavoPrueba.casta().irAExpedicion(esclavoPrueba, expedicion)})
+}
+
+test "vale la pena la expedicion?"{
+    const capital = new Capital(factorDeRiqueza = 10, defensores = 1)
+    const aldea = new Aldea(cantCrucifijos = 20)
+
+    const soldado1 = new Soldado(casta = esclavo, armas = 0, monedas = 10, vidasCobradas = 0)
+    const soldado2 = new Soldado(casta = esclavo, armas = 0, monedas = 10, vidasCobradas = 0)
+
+    const expedicion = new Expediciones(objetivos = [capital, aldea], integrantes = [soldado1, soldado2])
+
+    assert.that(expedicion.valeLaPena())
+}
+
+test "Ascenso social"{
+    const ragnar = new Soldado(casta = esclavo, armas = 0, monedas = 10, vidasCobradas = 0)
+
+    ragnar.ascender()
+    assert.equals(castaMedia, ragnar.casta())
+    ragnar.ascender()
+    assert.equals(noble, ragnar.casta())
+    ragnar.ascender()  //no escala mas
+    assert.equals(noble, ragnar.casta())
+}

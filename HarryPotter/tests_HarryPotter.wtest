@@ -1,0 +1,88 @@
+import casas_HarryPotter.*
+import hechizos_HarryPotter.*
+import hogwarts.*
+import materias_HarryPotter.*
+import bots_HarryPotter.*
+
+test "ingreso estudiantes"{
+    const harry = new Estudiante()
+    const draco = new Estudiante()
+    const boty = new Estudiante(aceitePuro = false)
+    const chatGPT = new Estudiante()
+    const hermione = new Estudiante(aceitePuro = false)
+
+    assert.equals(gryffindor, harry.casa())
+    assert.equals(slytherin, draco.casa())
+    assert.equals(ravenclaw, boty.casa())
+    assert.equals(hufflepuff, chatGPT.casa())
+    assert.equals(gryffindor, hermione.casa())
+
+}
+
+test "Primera Situacion (Harry vs Draco)"{
+    const harry = new Estudiante(cargaElectrica = 80)
+    const draco = new Estudiante()
+
+    const profe1 = new Profesor(materiasDictadas = 1)
+    const materia1 = new Materia(profesor = profe1, hechizoMateria = sectumSempra)
+    const profe2 = new Profesor(materiasDictadas = 2)
+    const materia2 = new Materia(profesor = profe2, hechizoMateria = avadakedabra)
+    const materia3 = new Materia(profesor = profe2, hechizoMateria = legardiumLebiosa)
+
+    harry.irAClase(materia1)
+    harry.irAClase(materia2)
+    harry.irAClase(materia3)
+    harry.irAClase(defensaContraLosHackeosOscuros)
+
+    assert.that(harry.tieneHechizo(sectumSempra))
+    assert.that(harry.tieneHechizo(avadakedabra))
+    assert.that(harry.tieneHechizo(legardiumLebiosa))
+    assert.that(harry.tieneHechizo(inmobilus))
+
+    assert.that(draco.aceitePuro())
+
+    harry.lanzarHechizo(sectumSempra, draco)
+
+    assert.notThat(draco.aceitePuro())
+}
+
+test "Segunda Situacion (Harry vs Sombrero Seleccionador)"{
+    const harry = new Estudiante(cargaElectrica = 80)
+
+    const profe1 = new Profesor(materiasDictadas = 1)
+    const materia1 = new Materia(profesor = profe1, hechizoMateria = sectumSempra)
+    const profe2 = new Profesor(materiasDictadas = 2)
+    const materia2 = new Materia(profesor = profe2, hechizoMateria = avadakedabra)
+    const materia3 = new Materia(profesor = profe2, hechizoMateria = legardiumLebiosa)
+
+    harry.irAClase(materia1)
+    harry.irAClase(materia2)
+    harry.irAClase(materia3)
+    harry.irAClase(defensaContraLosHackeosOscuros)
+
+    assert.that(harry.tieneHechizo(sectumSempra))
+    assert.that(harry.tieneHechizo(avadakedabra))
+    assert.that(harry.tieneHechizo(legardiumLebiosa))
+    assert.that(harry.tieneHechizo(inmobilus))
+
+    assert.that(sombrero.aceitePuro())
+
+    harry.lanzarHechizo(sectumSempra, sombrero)
+
+    assert.that(sombrero.aceitePuro())
+}
+
+test "Tercera Situacion (Draco vs Albus)"{
+    const draco = new Estudiante(casa = slytherin, hechizos = [sectumSempra, avadakedabra, legardiumLebiosa, inmobilus])
+    const hechizoComunAlbus = new HechizoComun(cantDisminuye = 60)
+    const albus = new Profesor(casa = gryffindor, hechizos = [sectumSempra, avadakedabra, legardiumLebiosa, inmobilus, hechizoComunAlbus], materiasDictadas = 10)
+
+    albus.lanzarHechizo(albus.getHechizos().last(), draco)
+    assert.equals(40, draco.cargaElectrica())
+
+    draco.lanzarHechizo(avadakedabra, albus)
+    assert.equals(50, albus.cargaElectrica())
+
+    assert.throwsException({albus.lanzarHechizo(albus.getHechizos().last(), draco)})
+    assert.equals(40, draco.cargaElectrica())
+}

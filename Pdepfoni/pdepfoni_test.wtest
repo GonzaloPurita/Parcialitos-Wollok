@@ -1,0 +1,31 @@
+import pdepfoni.*
+
+test "se realizo el consumo correctamente"{
+    const pack = new PackCreditos(fechaVencimiento = new Date(day=1, month=1, year=3000), credito = 100)
+    const consumo = new ConsumoInternet(fecha = new Date(day=1, month=1, year=3000), megabits = 1)
+    const linea = new Linea(telefono = 1136262590, packs = [pack])
+
+    assert.equals(0, linea.consumos().size())
+    assert.equals(100, pack.credito())
+
+    linea.realizarConsumo(consumo)
+
+    assert.equals(1, linea.consumos().size())
+    assert.equals(99.9, pack.credito())
+}
+
+test "no se realizo el consumo correctamente"{
+    const pack = new PackCreditos(fechaVencimiento = new Date(day=1, month=1, year=3000), credito = 1)
+    const consumo = new ConsumoInternet(fecha = new Date(day=1, month=1, year=3000), megabits = 100)
+    const linea = new Linea(telefono = 1136262590, packs = [pack])
+
+    assert.throwsException({linea.realizarConsumo(consumo)})
+}
+
+test "costo de una llamada"{
+    const consumoLlamada1 = new ConsumoLlamadas(fecha = new Date(day=1, month=1, year=3000), tiempoLlamada = 60)
+    const consumoLlamada2 = new ConsumoLlamadas(fecha = new Date(day=1, month=1, year=3000), tiempoLlamada = 30)
+
+    assert.equals(2.5, consumoLlamada1.costo())
+    assert.equals(1, consumoLlamada2.costo())
+}
